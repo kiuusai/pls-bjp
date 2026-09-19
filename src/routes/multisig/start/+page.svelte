@@ -174,7 +174,6 @@
 				generatedPSBTsMetadata = [
 					...generatedPSBTsMetadata,
 					{
-						redeemOutput,
 						psbtHex: psbt.toBuffer().toString('hex'),
 						pubkeys: script.combination
 					}
