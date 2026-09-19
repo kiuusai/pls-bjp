@@ -35,6 +35,8 @@
 		}
 	];
 
+	let timelockDays: number | undefined = undefined;
+
 	let replacingByFee = false;
 
 	$: network = contractData ? getNetworkByName(contractData.collateral.network) : null;
@@ -180,13 +182,13 @@
 				];
 			}
 		} else {
-			const multisig = multisigGen.new({
+			const multisig = multisigGen.createMultisig({
 				parts: contractData.collateral.pubkeys.clients.map((pubkey) => Uint8Array.from(Buffer.from('02' + pubkey, 'hex'))),
 				arbitrators: contractData.collateral.pubkeys.arbitrators.map((pubkey) => Uint8Array.from(Buffer.from('02' + pubkey, 'hex'))),
 				quorum: contractData.collateral.arbitratorsQuorum,
 				internalPubkey,
 				network: getMultisigNetworkByNetworkName(contractData.collateral.network),
-			})
+			});
 
 			const possibleScripts = multisig.scripts().filter(({ combination }) =>
 				combination.some((publicKey) => Buffer.from(publicKey).toString('hex') === '02' + pubkey)
