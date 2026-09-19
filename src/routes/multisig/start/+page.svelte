@@ -290,6 +290,31 @@
 						{/if}
 					</div>
 
+					{#if !getNetworkByName(contractData.collateral.network).isLiquid}
+						<div class="flex justify-center">
+							{#if timelockDays === undefined}
+								<button
+									on:click={() => (timelockDays = 90)}
+									class="bg-gray-100 hover:bg-gray-200 text-pls-blue-100 rounded px-4 py-2 transition-colors border border-pls-blue-100"
+								>
+									Add timelock
+								</button>
+							{:else}
+								<div class="bg-gray-50 rounded-lg p-4 border border-gray-200 w-full max-w-md">
+									<label for="timelock-days" class="block text-sm font-semibold text-gray-700 mb-2">
+										Days until the timelock's unlocked
+									</label>
+									<input
+										id="timelock-days"
+										type="number"
+										bind:value={timelockDays}
+										class="w-full px-3 py-2 border border-gray-300 rounded text-pls-blue-100 focus:outline-none focus:ring-2 focus:ring-pls-blue-100"
+									/>
+								</div>
+							{/if}
+						</div>
+					{/if}
+
 					<div class="space-y-4">
 						<div class="flex justify-between items-center">
 							<h2 class="text-xl font-semibold text-pls-blue-100">Receiving Addresses</h2>
