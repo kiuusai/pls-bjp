@@ -169,7 +169,6 @@
 					network,
 					signer,
 					addresses.filter(({ address }) => address.trim() !== '')
-					// timelockDays ? unixNow + oneDayInSeconds * timelockDays : undefined
 				);
 				if (!psbt) return alert('couldn\'t generate PSETs');
 
@@ -308,9 +307,18 @@
 								</button>
 							{:else}
 								<div class="bg-gray-50 rounded-lg p-4 border border-gray-200 w-full max-w-md">
-									<label for="timelock-days" class="block text-sm font-semibold text-gray-700 mb-2">
-										Days until the timelock's unlocked
-									</label>
+									<div class="flex justify-between items-top mb-2">
+										<label for="timelock-days" class="text-sm font-semibold text-gray-700 mb-2">
+											Days until the timelock's unlocked
+										</label>
+										<button
+											on:click={() => timelockDays = undefined}
+											class="text-red-500 hover:text-red-700 transition-colors font-bold text-sm mb-3"
+											title="Remove timelock"
+										>
+											x
+										</button>
+									</div>
 									<input
 										id="timelock-days"
 										type="number"
