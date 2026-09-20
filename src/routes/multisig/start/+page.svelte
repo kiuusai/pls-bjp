@@ -1,5 +1,5 @@
 <script lang="ts">
-	import multisigGen from "pls-bitcoin-lib";
+	import multisigGen, { LockTime } from "pls-bitcoin-lib";
 	import { tryParseFinishedContract } from '$lib/pls/contract';
 	import type { Contract } from 'pls-full';
 	import { type PsbtMetadata, SpendRequestEvent, type SpendRequestPayload } from '../shared';
@@ -196,8 +196,14 @@
 
 			generatedPSBTsMetadata = [];
 
+			const unixNow = Math.floor(Date.now() / 1000);
+
+			const oneDayInSeconds = 60 * 60 * 24;
+
 			for (const script of possibleScripts) {
 				const redeemScript = script.leaf;
+
+				const lockTime = timelockDays ? LockTime.Timestamp(unixNow + oneDayInSeconds * timelockDays) : undefined;
 
 				const rawPsbt = multisig.startTxSpending({
 					redeemScript,
@@ -210,6 +216,7 @@
 						address,
 						value: BigInt(value),
 					})),
+					lockTime,
 				});
 
 				const psbt = Psbt.fromBuffer(Buffer.from(rawPsbt));
