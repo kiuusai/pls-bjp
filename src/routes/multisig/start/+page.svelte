@@ -220,6 +220,8 @@
 
 				const psbt = Psbt.fromBuffer(Buffer.from(rawPsbt));
 
+				await psbt.signAllInputsAsync(signer);
+
 				generatedPSBTsMetadata = [
 					...generatedPSBTsMetadata,
 					{
